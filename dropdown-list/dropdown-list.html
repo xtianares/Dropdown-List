@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!--[if lt IE 8 ]> <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]> <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if IE 9]> <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=EDGE,chrome=1"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Dropdown List</title>
+	<meta name="description" content="" />
+	<link rel="shortcut icon" type="image/x-icon" href="http://www.xtianares.com/images/favicon.png" />
+	<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Fjalla+One|Roboto+Slab:300,400,500,700" />
+	<link rel="stylesheet" href="css/style.css" />
+
+</head>
+
+<body>
+
+<div class="container fluid">
+    <div class="col-sm-8 centered">
+        <br />
+        <h1>Dropdown List</h1>
+		<p>Designed to emulate the select dropdown using vanilla javascript.</p>
+		<div class="dropdown_list">
+			<span class="dropdown">DropDown List</span>
+			<ul class="drop">
+				<li><a href="">Dropdown Item</a></li>
+				<li><a href="">Dropdown Item</a></li>
+				<li><a href="">Dropdown Item</a></li>
+				<li><a href="">Dropdown Item</a></li>
+				<li class="last"><a href="">Dropdown Item</a></li>
+			</ul>
+		</div>
+		<div class="dropdown_list"> <span class="dropdown">DropDown List</span>
+			<ul class="drop">
+				<li><a href="">Dropdown Item</a></li>
+				<li><a href="">Dropdown Item</a></li>
+				<li><a href="">Dropdown Item</a></li>
+				<li><a href="">Dropdown Item</a></li>
+				<li class="last"><a href="">Dropdown Item</a></li>
+			</ul>
+		</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+	// Source: https://gist.github.com/k-gun/c2ea7c49edf7b757fe9561ba37cb19ca
+	// .classList() Polyfill for older browser - IE9 again...
+	!function(){function t(t){this.element=t}var e=function(t){return RegExp("(^| )"+t+"( |$)")},n=function(t,e,n){for(var i=0;i<t.length;i++)e.call(n,t[i])}
+	t.prototype={add:function(){n(arguments,function(t){this.contains(t)||(this.element.className+=" "+t)},this)},remove:function(){n(arguments,function(t){this.element.className=this.element.className.replace(e(t),"")},this)},toggle:function(t){return this.contains(t)?(this.remove(t),!1):(this.add(t),!0)},contains:function(t){return e(t).test(this.element.className)},replace:function(t,e){this.remove(t),this.add(e)}},"classList"in Element.prototype||Object.defineProperty(Element.prototype,"classList",{get:function(){return new t(this)}}),window.DOMTokenList&&null==DOMTokenList.prototype.replace&&(DOMTokenList.prototype.replace=t.prototype.replace)}()
+
+	// .closest() Polyfill for browsers that supports document.querySelectorAll() - IE9 again...
+	if (window.Element && !Element.prototype.closest) {
+	    Element.prototype.closest =
+	    function(s) {
+	        var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+	            i,
+	            el = this;
+	        do {
+	            i = matches.length;
+	            while (--i >= 0 && matches.item(i) !== el) {};
+	        } while ((i < 0) && (el = el.parentElement));
+	        return el;
+	    };
+	}
+
+	// Dropdown Select Toggle
+	var activeClass = "is-active"
+	var forEach = function (array, callback, scope) {
+		for (var i = 0; i < array.length; i++) {
+			callback.call(scope, i, array[i]); // passes back stuff we need from the array
+		}
+	};
+	forEach(document.querySelectorAll(".dropdown_list span.dropdown"), function (index, value) {
+		value.addEventListener('click', function() {
+	        //console.log(value.classList);
+	        if ( !value.classList.contains(activeClass) ) {
+	            var el = document.querySelectorAll(".dropdown_list span.dropdown");
+	            var i; for (i = 0; i < el.length; i++) {
+	                el[i].classList.remove(activeClass);
+	            }
+	            value.classList.toggle(activeClass);
+	        } else
+	        if ( value.classList.contains(activeClass) ) {
+	            value.classList.remove(activeClass);
+	        }
+		})
+	});
+	document.addEventListener('click', function(e) {
+		// Dropdown Select Toggle
+		var el = document.querySelectorAll(".dropdown_list span.dropdown")
+		var e=e? e : window.event;
+	    var event_element=e.target? e.target : e.srcElement;
+		if (!event_element.closest(".dropdown_list")){
+			//console.log(event_element.closest(".dropdown_list"));
+			var i; for (i = 0; i < el.length; i++) {
+				el[i].classList.remove(activeClass);
+			}
+		}
+	}, false);
+</script>
+
+</body>
+</html>
